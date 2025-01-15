@@ -86,7 +86,14 @@ def run_sys_update():
         print("Running system upgrade...")
         subprocess.run(['sudo', 'apt', 'update'], check=True)
         subprocess.run(['sudo', 'apt', 'full-upgrade', '-y'], check=True)
-        subprocess.run(['sudo', 'apt', 'autoremove', '-y'], check=True)
+        try:
+            subprocess.run(['sudo', 'apt', 'autoremove', '-y'], check=True)
+        except subprocess.CalledProcessError as e:
+            if e.returncode == 1:
+                print("Autoremove failed, attempting to fix broken packages...")
+                subprocess.run(['sudo', 'apt', '--fix-broken', 'install', '-y'], check=True)
+            else:
+                raise
         print("System upgrade completed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred during apt operations: {e}. Did you run as root?")

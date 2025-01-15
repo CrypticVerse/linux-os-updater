@@ -18,7 +18,7 @@ Linux OS Updater is a Python tool designed to simplify the process of updating a
 Install with the dedicated install bash script
 
 ```bash
-curl -fsSL https://github.com/CrypticVerse/linux-os-updater/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/install.sh | bash
 ```
 
 ## Usage

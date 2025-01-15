@@ -14,6 +14,9 @@ else
   sudo wget -O "/usr/bin/$distro-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/$distro-updater.py"
   sudo wget -O "/usr/bin/version_mapping" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
   sudo wget -O "/usr/bin/update-os-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/tools/update-os-updater.sh"
+  sudo chmod +x "/usr/bin/$distro-updater" && sudo chmod +x "/usr/bin/update-os-updater"
 fi
 
-echo "Script successfully updated! Restart the terminal for changes to take effect."
+clear
+
+echo -e "\033[0;32mScript successfully updated! Restart the terminal for changes to take effect.\033[0m"
