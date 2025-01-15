@@ -10,5 +10,4 @@ sleep 2
 
 echo "Setting up files..."
 
-chmod +x "./tools/update-os-updater.sh"
-exec "./tools/update-os-updater.sh"
+curl -fsSL https://github.com/CrypticVerse/linux-os-updater/tools/update-os-updater.sh | bash

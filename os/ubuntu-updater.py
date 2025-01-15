@@ -1,12 +1,11 @@
+#!/bin/python3
+
 import sys
 import subprocess
 import re
 import glob
+from version_mapping import UBUNTU_VERSION_TO_NAME
 
-VERSION_TO_NAME = {
-    '25.04':'plucky',
-    '24.10':'oracular',
-}
 
 LATEST_STABLE = '24.10'
 
@@ -104,11 +103,11 @@ def main():
         print(f'Warning: 25.04 (Plucky) is a development release!')
         input("Press Enter to continue, or Ctrl+C to cancel this operation!")
 
-    if version not in VERSION_TO_NAME:
+    if version not in UBUNTU_VERSION_TO_NAME:
         print(f'Unknown version: {version}')
         sys.exit(1)
 
-    new_name = VERSION_TO_NAME[version]
+    new_name = UBUNTU_VERSION_TO_NAME[version]
     current_version = get_current_number()
     current_name = get_current_name()
 
