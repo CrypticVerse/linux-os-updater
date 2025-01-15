@@ -52,6 +52,7 @@ def compare(current, updated):
 
 def update_sources(oldName, newName):
     try:
+        # First, use Python's built-in file handling (as before)
         with open('/etc/apt/sources.list', 'r') as file:
             file_data = file.read()
 
@@ -63,15 +64,11 @@ def update_sources(oldName, newName):
 
         print(f"Replaced {oldName} with {newName} in /etc/apt/sources.list.")
         
-        # Optionally, handle other sources list files
-        for filename in glob.glob('/etc/apt/sources.list.d/*.list'):
-            with open(filename, 'r') as file:
-                file_data = file.read()
-
-            updated_data = re.sub(r'\b' + re.escape(oldName) + r'\b', newName, file_data)
-
-            with open(filename, 'w') as file:
-                file.write(updated_data)
+        # Optionally, handle other sources list files using sed for batch processing
+        for filename in glob.glob('/etc/apt/sources.list.d/*.sources'):
+            # Here, you can execute the same 'sed' command you requested earlier
+            sed_command = f"sed -i 's/{re.escape(oldName)}/{re.escape(newName)}/g' {filename}"
+            subprocess.run(sed_command, shell=True, check=True)
             print(f"Replaced {oldName} with {newName} in {filename}.")
         
     except PermissionError:
@@ -79,6 +76,9 @@ def update_sources(oldName, newName):
         sys.exit(1)
     except FileNotFoundError:
         print("/etc/apt/sources.list file not found.")
+        sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while running sed: {e}")
         sys.exit(1)
 
 def run_sys_update():
