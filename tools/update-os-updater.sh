@@ -1,11 +1,5 @@
 #!/bin/sh
 
-# Check if running as sudo
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root or use sudo"
-  exit 1
-fi
-
 distro=$(grep ^ID= /etc/os-release | cut -d= -f2 | tr -d '"')
 if [ "$distro" = "manjaro" ]; then
   distro="archlinux"
