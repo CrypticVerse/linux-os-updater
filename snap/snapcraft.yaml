@@ -7,12 +7,15 @@ description: |
 base: core24
 confinement: strict
 
+platforms:
+  amd64:
+  arm64:
+
 apps:
   linux-os-updater:
-    command: bin/linux-os-updater
+    command: bin/setup-os-updater
     plugs:
       - network
-      - python3
       - home
     environment:
       PYTHONPATH: $SNAP/usr/lib/python3.8/site-packages
