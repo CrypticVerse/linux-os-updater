@@ -1,7 +1,6 @@
 name: linux-os-updater
 version: '1.0'
 summary: 'A tool for updating and managing Linux operating system packages and versions'
-summary: 'test summary'
 description: |
   A comprehensive tool designed to update and manage packages and versions of the Linux operating system efficiently.
 
