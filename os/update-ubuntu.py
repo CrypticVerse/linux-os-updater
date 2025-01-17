@@ -6,9 +6,6 @@ import re
 import glob
 from version_mapping import UBUNTU_VERSION_TO_NAME
 
-
-LATEST_STABLE = '24.10'
-
 def get_current_name():
     try:
         result = subprocess.run(['lsb_release', '-c'], capture_output=True, text=True, check=True)
@@ -106,10 +103,6 @@ def main():
 
     version = sys.argv[1]
 
-    if version == "25.04":
-        print(f'Warning: 25.04 (Plucky) is a development release!')
-        input("Press Enter to continue, or Ctrl+C to cancel this operation!")
-
     if version not in UBUNTU_VERSION_TO_NAME:
         print(f'Unknown version: {version}')
         sys.exit(1)
@@ -118,8 +111,13 @@ def main():
     current_version = get_current_number()
     current_name = get_current_name()
 
-    if compare(current_version, version) >= 0:
-        print(f"Your current version ({current_version}) is higher than or the same as the target version ({version}). No update needed.")
+    sorted_versions = sorted(UBUNTU_VERSION_TO_NAME.keys(), key=lambda x: list(map(int, x.split('.'))))
+
+    if version == sorted_versions[0]:
+        print(f"You are on the latest stable release ({version}). No update needed.")
+        sys.exit(0)
+    elif compare(current_version, version) >= 0:
+        print(f"Your current version ({current_version}) is higher than the target version ({version}). No update needed.")
         sys.exit(0)
 
     # changelog updates soon?

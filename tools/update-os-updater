@@ -1,6 +1,11 @@
 #!/bin/bash
 
-distro=$(grep ^ID= /etc/os-release | cut -d= -f2 | tr -d '"')
+uppercase_distro=$(grep ^NAME= /etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
+distro=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
+
+if [ "$distro" = "opensuseleap" ]; then
+    distro="opensuse"
+fi
 
 
 echo "copying update files..."

@@ -13,7 +13,7 @@ platforms:
 
 apps:
   linux-os-updater:
-    command: bin/setup-os-updater
+    command: bin/linux-os-updater
     plugs:
       - network
       - home
@@ -31,4 +31,4 @@ parts:
     override-build: |
       chmod +x setup-os-updater
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
-      cp setup-os-updater $SNAPCRAFT_PART_INSTALL/bin/setup-os-updater
+      cp linux-os-updater $SNAPCRAFT_PART_INSTALL/bin/linux-os-updater

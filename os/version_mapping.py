@@ -1,6 +1,5 @@
 UBUNTU_VERSION_TO_NAME = {
     # Ubuntu
-    '25.04':'plucky',
     '24.10':'oracular',
     '24.04':'jammy',
     '23.10':'mantic',
@@ -42,4 +41,24 @@ UBUNTU_VERSION_TO_NAME = {
     '5.10':'breezy',
     '5.04':'hoary',
     '4.10':'warty',
+}
+LINUXMINT_VERSIONS = {
+    '22.1',
+    '22',
+    '21.3',
+    '21.2',
+    '21.1',
+    '21',
+    '20.3',
+    '20.2',
+    '20.1',
+    '20',
+    '6',
+}
+
+SUSE_VERSIONS = {
+    '15.6',
+    '15.5',
+    '15.4',
+    '15.3',
 }

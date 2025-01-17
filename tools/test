@@ -1,0 +1,9 @@
+#!/bin/zsh
+test="UBUNTU"
+#LOWER_VALUE=$(echo "$test" | tr '[:upper:]' '[:lower:]')
+
+if [[ "$VALUE" == "ubuntu" ]]; then  # Converts VALUE to lowercase
+    echo "It's Ubuntu!"
+else
+    echo "no!"
+fi    
