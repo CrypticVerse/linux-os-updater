@@ -29,6 +29,6 @@ parts:
       - python3
       - python3-pip
     override-build: |
-      chmod +x setup-os-updater
+      chmod +x linux-os-updater
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       cp linux-os-updater $SNAPCRAFT_PART_INSTALL/bin/linux-os-updater
