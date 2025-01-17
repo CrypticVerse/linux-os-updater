@@ -15,16 +15,28 @@ Linux OS Updater is a Python tool designed to simplify the process of updating a
 
 ## Installation
 
-Install with the dedicated install bash script
+Install can be done with Snap by Canoical.
+Python is included in the snap dependencies.
 
+```sh
+sudo snap install linux-os-updater
+```
+
+If your linux OS is unsupported by snap, or the snap does not work, run the dedicated bash script.
+Python must also be installed before hand.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/install.sh | bash
 ```
 
 ## Usage
 
-Run the updater script:
+To update your Linux-based OS, run
+```sh
+sudo update-<distro> [optional<version>]
+```
+The version arg is optional or required based on the list specified [here](https://github.com/CrypticVerse/linux-os-updater/wiki/command-args)
 
+If you find that it says unknown version when specifying a version number, but that version exists, you can run this to update the scripts.
 ```bash
 sudo update-os-updater
 ```

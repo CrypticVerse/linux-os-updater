@@ -5,7 +5,7 @@ import subprocess
 def run_sys_update():
     try:
         print("Running system upgrade...")
-        subprocess.run(['sudo', 'pacman', '-Syu'], check=True)
+        subprocess.run("sudo apt update && sudo apt full-upgrade -y", shell=True, check=True)
         print("System upgrade completed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred during pacman operations: {e}. Did you run as root?")

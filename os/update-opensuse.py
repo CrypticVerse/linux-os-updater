@@ -1,3 +1,4 @@
+#!/bin/python3s
 import sys
 import subprocess
 import re

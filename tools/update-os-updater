@@ -18,9 +18,11 @@ sudo chmod +x "/usr/bin/update-$distro" && sudo chmod +x "/usr/bin/update-os-upd
 if [ "$distro" = "manjaro" ]; then
     distro="archlinux"
     sudo mv "/usr/bin/update-archlinux" "/usr/bin/update-manjaro"
-elif [ "$distro" = "kubuntu" ]; then
+elif [[ "$distro" =~ ^(kubuntu|lubuntu|xubuntu)$ ]]; then
     distro="ubuntu"
-    sudo mv "/usr/bin/update-ubuntu" "/usr/bin/update-kubuntu"
+    sudo mv "/usr/bin/update-ubuntu" "/usr/bin/update-$distro"
 fi
+
+echo -e "\n\n\n\n"
 
 echo -e "\033[0;32mScript successfully updated! Restart the terminal for changes to take effect.\033[0m"

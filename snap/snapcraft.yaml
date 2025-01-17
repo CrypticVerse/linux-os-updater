@@ -1,5 +1,5 @@
 name: linux-os-updater
-version: '1.0'
+version: git
 summary: 'A tool for updating and managing Linux operating system packages and versions'
 description: |
   A comprehensive tool designed to update and manage packages and versions of the Linux operating system efficiently.
