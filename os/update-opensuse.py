@@ -1,9 +1,18 @@
-#!/bin/python3s
+#!/bin/python3
 import sys
 import subprocess
 import re
 from version_mapping import SUSE_VERSIONS
 
+def new_python(current_version):
+    try:
+        subprocess.run(f"zypper addrepo https://download.opensuse.org/repositories/devel:languages:python:Factory/{current_version}/devel:languages:python:Factory.repo", shell=True, check=True)
+        subprocess.run("zypper refresh", shell=True, check=True)
+        subprocess.run("zypper install python310", shell=True, check=True)
+        subprocess.run("sudo update-alternatives --set python3 /usr/bin/python3.10", shell=True, check=True)
+    except subprocess.CalledProcessError:
+        print("Error running zypper.")
+        sys.exit(1)
 
 def edit_keys():
     try:
@@ -19,11 +28,21 @@ def warn_reboot():
     if choice in ['n', 'no']:
         print("exiting...")
         sys.exit(1)
+    print(f"\033[33mWarning: This program needs some manual input. Do you accept this?\033[0m")
+    choice = input("continue? [y/N] ").strip().lower()
+    if choice not in ['y', 'yes']:
+        print("exiting...")
+        sys.exit(1)    
 
 
 def get_suse_version():
     try:
         result = subprocess.run(['lsb_release', '-r'], capture_output=True, text=True, check=True)
+        try:
+            subprocess.run(['lsb_release', '--version'], capture_output=True, text=True, check=True)
+        except subprocess.CalledProcessError:
+            subprocess.run("sudo zypper install -y lsb-release", shell=True, check=True)
+            result = subprocess.run(['lsb_release', '-r'], capture_output=True, text=True, check=True)
         match = re.search(r'Release:\s+(\S+)', result.stdout)
         if match:
             return match.group(1)
@@ -48,29 +67,31 @@ def runUpdate(new_version):
 def main():
     if len(sys.argv) != 2:
         print("Usage: update-opensuse <version>")
-        sys.exit(1)   
+        sys.exit(1)
+
+    current_python_version = sys.version_info
+    if current_python_version < (3, 10):
+        new_python(get_suse_version())
 
     suse_version = get_suse_version()
     new_suse_version = sys.argv[1]
 
-    print(f"\033[33mWarning: This program WILL reboot your system. Are you sure you want to continue?\033[0m")
-    choice = input("continue? [y/N] ").strip().lower()
-    if choice in ['n', 'no']:
-        print("exiting...")
-        sys.exit(1)
+    warn_reboot()
 
     if suse_version == '15.4':
         edit_keys()
 
-    sorted_versions = sorted(SUSE_VERSIONS.keys(), key=lambda x: list(map(int, x.split('.'))))    
+    sorted_versions = sorted(SUSE_VERSIONS, key=lambda x: list(map(int, x.split('.'))))    
 
     if suse_version == sorted_versions[0]:
         print("You are already on the latest version of openSUSE.")
         sys.exit(1)
     elif suse_version <= '15.2':
         print("Upgrading from openSUSE 15.2 or lower is unsupported. Please follow the guide on the openSUSE website.")    
-
-    warn_reboot()
+        sys.exit(1)
+    elif new_suse_version >= '16.0':
+        print("Upgrading to openSUSE 16.0 or higher is currently unsupported. Please follow the guide on the openSUSE website.")    
+        sys.exit(1)
 
     runUpdate(new_suse_version)
     subprocess.run("sudo reboot", shell=True, check=True)

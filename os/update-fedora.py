@@ -26,6 +26,11 @@ def run_upgrade_and_reboot(version):
     script_content = f"""#!/bin/bash
     # This script runs after reboot to start the system upgrade
     sudo dnf system-upgrade download --releasever={version} -y
+    
+    # Disable and remove the systemd service after the upgrade
+    sudo systemctl disable run_upgrade_after_reboot.service
+    sudo rm /etc/systemd/system/run_upgrade_after_reboot.service
+    sudo systemctl daemon-reload
     """
     
     # Write the script to /usr/local/bin/run_upgrade_after_reboot.sh

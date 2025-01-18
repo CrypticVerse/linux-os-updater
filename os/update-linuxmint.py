@@ -55,7 +55,7 @@ def main():
         print(f"Invalid version: {version}")
         sys.exit(1)
 
-    sorted_versions = sorted(LINUXMINT_VERSIONS.keys(), key=lambda x: list(map(int, x.split('.'))))
+    sorted_versions = sorted(LINUXMINT_VERSIONS, key=lambda x: list(map(int, x.split('.'))))
 
     if version == sorted_versions[0]:
         print(f"You are on the latest stable release ({version}). No update needed.")

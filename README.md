@@ -11,7 +11,7 @@ Linux OS Updater is a Python tool designed to simplify the process of updating a
 
 ## Requirements
 
-- Python 3.x
+- Python 3.x (Our openSUSE script will upgrade from 3.6.5 to 3.10 automatically)
 
 ## Installation
 

@@ -5,4 +5,29 @@ sleep 2
 
 echo "Setting up files..."
 
-sudo curl -fsSL https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/tools/update-os-updater | bash
+uppercase_distro=$(grep ^NAME= /etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
+distro=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
+
+if [ "$distro" = "opensuseleap" ]; then
+    distro="opensuse"
+fi
+
+
+echo "copying update files..."
+sudo wget -O "/usr/bin/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
+sudo wget -O "/usr/bin/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+sudo wget -O "/usr/bin/update-os-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/tools/update-os-updater"
+sudo chmod +x "/usr/bin/update-$distro" && sudo chmod +x "/usr/bin/update-os-updater"
+
+# OS Specific stuff IG
+if [ "$distro" = "manjaro" ]; then
+    distro="archlinux"
+    sudo mv "/usr/bin/update-archlinux" "/usr/bin/update-manjaro"
+elif [[ "$distro" =~ ^(kubuntu|lubuntu|xubuntu)$ ]]; then
+    distro="ubuntu"
+    sudo mv "/usr/bin/update-ubuntu" "/usr/bin/update-$distro"
+fi
+
+echo -e "\n\n\n\n"
+
+echo -e "\033[0;32mScript successfully updated! Restart the terminal for changes to take effect.\033[0m"

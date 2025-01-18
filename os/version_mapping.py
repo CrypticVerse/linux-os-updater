@@ -57,6 +57,7 @@ LINUXMINT_VERSIONS = {
 }
 
 SUSE_VERSIONS = {
+    '16',
     '15.6',
     '15.5',
     '15.4',
