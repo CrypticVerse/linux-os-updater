@@ -8,9 +8,11 @@ download_nosnap() {
 }
 
 download_snap() {
-    wget -O "${SNAP_COMMON}update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
-    wget -O "${SNAP_COMMON}version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
-    chmod +x "${SNAP_COMMON}update-$distro"
+    INSTALL_DIR = "/home/$USER/linux-os-updater/"
+    mkdir $INSTALL_DIR
+    curl -L -o "${INSTALL_DIR}/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
+    curl -L -o "${INSTALL_DIR}/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    chmod +x "${INSTALL_DIR}/update-$distro"
 }
 
 echo "Welcome to Linux OS Updater!"

@@ -18,7 +18,7 @@ apps:
       - network
       - home
     environment:
-      PATH: "$SNAP_COMMON:$PATH"
+      PATH: "/home/$USER/linux-os-updater:$PATH"
       PYTHONPATH: $SNAP/usr/lib/python3.8/site-packages
 
 parts:
