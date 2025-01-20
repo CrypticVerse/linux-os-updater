@@ -1,5 +1,19 @@
 #!/bin/bash
 
+download_nosnap() {
+    sudo wget -O "/usr/bin/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
+    sudo wget -O "/usr/bin/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    sudo wget -O "/usr/bin/update-os-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/tools/update-os-updater"
+    sudo chmod +x "/usr/bin/update-$distro" && sudo chmod +x "/usr/bin/update-os-updater"
+}
+
+download_snap() {
+    sudo wget -O "/snap/bin/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
+    sudo wget -O "/snap/bin/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    sudo wget -O "/snap/bin/update-os-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/tools/update-os-updater"
+    sudo chmod +x "/snap/bin/update-$distro" && sudo chmod +x "/snap/bin/update-os-updater"
+}
+
 echo "Welcome to Linux OS Updater!"
 sleep 2
 
@@ -12,20 +26,11 @@ if [ "$distro" = "opensuseleap" ]; then
     distro="opensuse"
 fi
 
-
 echo "copying update files..."
-sudo wget -O "/usr/bin/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
-sudo wget -O "/usr/bin/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
-sudo wget -O "/usr/bin/update-os-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/tools/update-os-updater"
-sudo chmod +x "/usr/bin/update-$distro" && sudo chmod +x "/usr/bin/update-os-updater"
-
-# OS Specific stuff IG
-if [ "$distro" = "manjaro" ]; then
-    distro="archlinux"
-    sudo mv "/usr/bin/update-archlinux" "/usr/bin/update-manjaro"
-elif [[ "$distro" =~ ^(kubuntu|lubuntu|xubuntu)$ ]]; then
-    distro="ubuntu"
-    sudo mv "/usr/bin/update-ubuntu" "/usr/bin/update-$distro"
+if [ -n "$(command -v snap)" ]; then
+    download_snap
+else
+    download_nosnap
 fi
 
 echo -e "\n\n\n\n"
