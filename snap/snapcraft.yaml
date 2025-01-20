@@ -18,6 +18,7 @@ apps:
       - network
       - home
     environment:
+      PATH: "$SNAP_COMMON:$PATH"
       PYTHONPATH: $SNAP/usr/lib/python3.8/site-packages
 
 parts:
