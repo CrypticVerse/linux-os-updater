@@ -4,12 +4,14 @@ summary: 'A tool for updating and managing Linux operating system packages and v
 description: |
   A comprehensive tool designed to update and manage packages and versions of the Linux operating system efficiently.
 
-base: core24
+base: core22
 confinement: strict
 
-platforms:
-  amd64:
-  arm64:
+architectures:
+  - build-on: amd64
+    build-for: [amd64]
+  - build-on: arm64
+    build-for: [arm64]
 
 apps:
   linux-os-updater:

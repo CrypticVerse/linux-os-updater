@@ -1,15 +1,8 @@
 #!/bin/bash
 
-download_nosnap() {
-    sudo wget -O "/usr/bin/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
-    sudo wget -O "/usr/bin/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
-    sudo wget -O "/usr/bin/linux-os-updater" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/linux-os-updater"
-    sudo chmod +x "/usr/bin/update-$distro" && sudo chmod +x "/usr/bin/linux-os-updater"
-}
-
-download_snap() {
-    INSTALL_DIR = "/home/$USER/linux-os-updater/"
-    mkdir $INSTALL_DIR
+download() {
+    INSTALL_DIR="/home/$USER/opt/linux-os-updater/"
+    mkdir -p $INSTALL_DIR
     curl -L -o "${INSTALL_DIR}/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
     curl -L -o "${INSTALL_DIR}/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
     chmod +x "${INSTALL_DIR}/update-$distro"
@@ -23,16 +16,21 @@ echo "Setting up files..."
 uppercase_distro=$(grep ^NAME= /etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
 distro=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
 
-if [ "$distro" = "opensuseleap" ]; then
-    distro="opensuse"
-fi
-
 echo "copying update files..."
-if [ -n "$(command -v snap)" ]; then
-    download_snap
-else
-    download_nosnap
-fi
+download
+
+declare -A names=(
+    ["manjaro"]="archlinux"
+    ["opensuseleap"]="opensuse"
+)
+
+for key in "${!names[@]}"; do
+    
+    if [[ "$distro" == "${names[$key]}" ]]; then
+        mv "/home/$USER/opt/linux-os-updater/update-$distro.py" "/home/$USER/opt/linux-os-updater/update-$key.py"
+        break
+    fi
+done
 
 echo -e "\n\n\n\n"
 
