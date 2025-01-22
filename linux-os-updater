@@ -1,11 +1,22 @@
 #!/bin/bash
 
+uppercase_distro=$(grep ^NAME= /etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
+distribution=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
+
+check_special_names() {
+    if [[ "$distribution" == "arch" ]]; then
+        distribution="archlinux"
+    elif [[ "$distribution" == "opensuseleap" ]]; then
+        distribution="opensuse"
+    elif [[ "$distribution" == "ubuntucore" ]]; then
+        distribution="ubuntu"
+    fi
+}
+
 download() {
-    INSTALL_DIR="/home/$USER/opt/linux-os-updater/"
-    mkdir -p $INSTALL_DIR
-    curl -L -o "${INSTALL_DIR}/update-$distro" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distro.py"
-    curl -L -o "${INSTALL_DIR}/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
-    chmod +x "${INSTALL_DIR}/update-$distro"
+    curl -L -o "${SNAP_USER_COMMON}/update-$distribution" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distribution.py"
+    curl -L -o "${SNAP_USER_COMMON}/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    chmod +x "${SNAP_USER_COMMON}/update-$distribution"
 }
 
 echo "Welcome to Linux OS Updater!"
@@ -13,10 +24,9 @@ sleep 2
 
 echo "Setting up files..."
 
-uppercase_distro=$(grep ^NAME= /etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
-distro=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
-
 echo "copying update files..."
+
+check_special_names
 download
 
 declare -A names=(
@@ -26,8 +36,8 @@ declare -A names=(
 
 for key in "${!names[@]}"; do
     
-    if [[ "$distro" == "${names[$key]}" ]]; then
-        mv "/home/$USER/opt/linux-os-updater/update-$distro.py" "/home/$USER/opt/linux-os-updater/update-$key.py"
+    if [[ "$distribution" == "${names[$key]}" ]]; then
+        mv "/home/$USER/opt/linux-os-updater/update-$distribution.py" "/home/$USER/opt/linux-os-updater/update-$key.py"
         break
     fi
 done
