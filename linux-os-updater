@@ -1,6 +1,9 @@
 #!/bin/bash
 
 uppercase_distro=$(grep ^NAME= /etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
+if [[ -n $SNAP_USER_COMMON ]]; then
+    uppercase_distro=$(grep ^NAME= /var/lib/snapd/hostfs/etc/os-release | cut -d= -f2 | tr -d '"' | tr -d ' ')
+fi
 distribution=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
 
 check_special_names() {
@@ -13,10 +16,16 @@ check_special_names() {
     fi
 }
 
-download() {
+download_snap() {
     curl -L -o "${SNAP_USER_COMMON}/update-$distribution" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distribution.py"
     curl -L -o "${SNAP_USER_COMMON}/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
     chmod +x "${SNAP_USER_COMMON}/update-$distribution"
+}
+download_nosnap() {
+    mkdir "/home/$USER/linux-os-updater"
+    curl -L -o "/home/$USER/linux-os-updater/update-$distribution" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distribution.py"
+    curl -L -o "/home/$USER/linux-os-updater/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    chmod +x "/home/$USER/linux-os-updater/update-$distribution"
 }
 
 echo "Welcome to Linux OS Updater!"
@@ -27,7 +36,11 @@ echo "Setting up files..."
 echo "copying update files..."
 
 check_special_names
-download
+if command -v snap &> /dev/null && [[ -n "$SNAP" ]]; then
+    download_snap
+else
+    download_nosnap
+fi
 
 declare -A names=(
     ["manjaro"]="archlinux"

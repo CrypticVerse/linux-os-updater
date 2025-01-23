@@ -42,18 +42,18 @@ UBUNTU_VERSION_TO_NAME = {
     '5.04':'hoary',
     '4.10':'warty',
 }
-LINUXMINT_VERSIONS = {
-    '22.1',
-    '22',
-    '21.3',
-    '21.2',
-    '21.1',
-    '21',
-    '20.3',
-    '20.2',
-    '20.1',
-    '20',
-    '6',
+LINUXMINT_VERSIONS_TO_NAME = {
+    '22.1': 'xia',
+    '22': 'wilma',
+    '21.3': 'virginia',
+    '21.2': 'victoria',
+    '21.1': 'vera',
+    '21': 'vanessa',
+    '20.3': 'una',
+    '20.2': 'uma',
+    '20.1': 'ulyssa',
+    '20': 'ulyana',
+    '6': 'faye',
 }
 
 SUSE_VERSIONS = {
