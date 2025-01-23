@@ -3,8 +3,7 @@ import os
 import sys
 import re
 import subprocess
-
-LATEST_STABLE = '41'
+from extra_functions import *
 
 def get_fedora_version():
     try:
@@ -70,21 +69,16 @@ def run_upgrade_and_reboot(version):
     subprocess.run(['sudo', 'reboot'])
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: update-fedora <version>")
-        sys.exit(1)
+    echo_distro("fedora", version=True)
 
     fedora_version = sys.argv[1]
     current_version = get_fedora_version()
     if fedora_version == get_fedora_version() or fedora_version < get_fedora_version():
         print(f"Your current version ({current_version}) is higher than or the same as the target version ({fedora_version}). No update needed.")
         sys.exit(0)
-    elif fedora_version == LATEST_STABLE:
-        print("Fedora 41 is the latest stable release.")
+    elif fedora_version == FEDORA_VERSIONS[0]:
+        print(f"Fedora {FEDORA_VERSIONS[0]} is the latest stable release.")
         sys.exit(0)
-    elif fedora_version == LATEST_STABLE + 1:
-        print("Fedora 42 is a development release!")
-        input("Press Enter to continue, or Ctrl+C to cancel this operation.")    
 
     run_upgrade_and_reboot(fedora_version)    
 

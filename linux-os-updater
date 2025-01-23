@@ -7,24 +7,24 @@ fi
 distribution=$(echo "$uppercase_distro" | tr '[:upper:]' '[:lower:]')
 
 check_special_names() {
-    if [[ "$distribution" == "arch" ]]; then
-        distribution="archlinux"
-    elif [[ "$distribution" == "opensuseleap" ]]; then
+    if [[ "$distribution" == "opensuseleap" ]]; then
         distribution="opensuse"
     elif [[ "$distribution" == "ubuntucore" ]]; then
         distribution="ubuntu"
+    elif [[ "$distribution" == "debiangnu/linux" ]]; then
+        distribution="debian"    
     fi
 }
 
 download_snap() {
     curl -L -o "${SNAP_USER_COMMON}/update-$distribution" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distribution.py"
-    curl -L -o "${SNAP_USER_COMMON}/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    curl -L -o "${SNAP_USER_COMMON}/extra_functions.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/extra_functions.py"
     chmod +x "${SNAP_USER_COMMON}/update-$distribution"
 }
 download_nosnap() {
     mkdir "/home/$USER/linux-os-updater"
     curl -L -o "/home/$USER/linux-os-updater/update-$distribution" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/update-$distribution.py"
-    curl -L -o "/home/$USER/linux-os-updater/version_mapping.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/version_mapping.py"
+    curl -L -o "/home/$USER/linux-os-updater/extra_functions.py" "https://raw.githubusercontent.com/CrypticVerse/linux-os-updater/refs/heads/master/os/extra_functions.py"
     chmod +x "/home/$USER/linux-os-updater/update-$distribution"
 }
 
@@ -36,7 +36,7 @@ echo "Setting up files..."
 echo "copying update files..."
 
 check_special_names
-if command -v snap &> /dev/null && [[ -n "$SNAP" ]]; then
+if command -v snap &> /dev/null && [[ -n "$SNAP_USER_COMMON" ]]; then
     download_snap
 else
     download_nosnap
@@ -50,7 +50,11 @@ declare -A names=(
 for key in "${!names[@]}"; do
     
     if [[ "$distribution" == "${names[$key]}" ]]; then
-        mv "/home/$USER/opt/linux-os-updater/update-$distribution.py" "/home/$USER/opt/linux-os-updater/update-$key.py"
+        if command -v snap &> /dev/null && [[ -n "$SNAP_USER_COMMON" ]]; then
+            mv "${SNAP_USER_COMMON}/update-$distribution" "${SNAP_USER_COMMON}/update-$key"
+        else
+            mv "/home/$USER/linux-os-updater/update-$distribution" "/home/$USER/linux-os-updater/update-$key"
+        fi
         break
     fi
 done

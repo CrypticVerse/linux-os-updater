@@ -1,6 +1,7 @@
 #!/bin/python3
 import sys
 import subprocess
+from extra_functions import *
 
 def run_sys_update():
     try:
@@ -12,9 +13,7 @@ def run_sys_update():
         sys.exit(1)
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: archlinux-updater <version>")
-        sys.exit(1)
+    echo_distro("kalilinux", version=False)
 
     run_sys_update()
 

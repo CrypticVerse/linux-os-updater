@@ -4,7 +4,7 @@ import sys
 import subprocess
 import re
 import glob
-from version_mapping import UBUNTU_VERSION_TO_NAME
+from extra_functions import *
 
 def get_current_name():
     try:
@@ -93,9 +93,7 @@ def run_sys_update():
         sys.exit(1)
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: ubuntu-updater <version>")
-        sys.exit(1)
+    echo_distro("ubuntu", version=True)
 
     version = sys.argv[1]
 

@@ -4,7 +4,7 @@ import sys
 import subprocess
 import re
 import glob
-from version_mapping import LINUXMINT_VERSIONS_TO_NAME
+from extra_functions import LINUXMINT_VERSIONS_TO_NAME
 
 def get_current_name():
     try:

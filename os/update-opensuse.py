@@ -2,7 +2,7 @@
 import sys
 import subprocess
 import re
-from version_mapping import SUSE_VERSIONS
+from extra_functions import *
 
 def new_python(current_version):
     try:
@@ -20,19 +20,7 @@ def edit_keys():
         subprocess.run("rpm --import /usr/lib/rpm/gnupg/keys/gpg-pubkey-25db7ae0-645bae34.asc", shell=True, check=True)
     except subprocess.CalledProcessError:
         print("Error running rpm.")
-        sys.exit(1)    
-
-def warn_reboot():
-    print(f"\033[33mWarning: This program WILL reboot your system. Are you sure you want to continue?\033[0m")
-    choice = input("continue? [y/N] ").strip().lower()
-    if choice in ['n', 'no']:
-        print("exiting...")
-        sys.exit(1)
-    print(f"\033[33mWarning: This program needs some manual input. Do you accept this?\033[0m")
-    choice = input("continue? [y/N] ").strip().lower()
-    if choice not in ['y', 'yes']:
-        print("exiting...")
-        sys.exit(1)    
+        sys.exit(1) 
 
 
 def get_suse_version():
@@ -65,9 +53,7 @@ def runUpdate(new_version):
         sys.exit(1)  
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: update-opensuse <version>")
-        sys.exit(1)
+    echo_distro("opensuse", version=True)
 
     current_python_version = sys.version_info
     if current_python_version < (3, 10):

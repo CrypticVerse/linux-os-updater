@@ -2,13 +2,7 @@
 import sys
 import subprocess
 import re
-
-def warn_reboot():
-    print(f"\033[33mWarning: This program WILL reboot your system. Are you sure you want to continue?\033[0m")
-    choice = input("continue? [y/N] ").strip().lower()
-    if choice in ['n', 'no']:
-        print("exiting...")
-        sys.exit(1)
+from extra_functions import *
 
 
 def get_pop_version():
@@ -61,11 +55,7 @@ def main():
         print("Follow the guide on the Pop!_OS website to update to 22.04")
         sys.exit(1)
 
-    if len(sys.argv) != 1:
-        print("Usage: popos-updater")
-        print("This script does not take any arguments.")
-        print("Pop!_OS does not have specific version upgrades, so this script will update your system to the latest version.")
-        sys.exit(1)
+    echo_distro("popos", version=False)
 
     pop_version = get_pop_version()
     if pop_version == '22.04':

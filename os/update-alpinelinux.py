@@ -1,13 +1,7 @@
 #!/bin/python3
 import sys
 import subprocess
-
-def warn_reboot():
-    print(f"\033[33mWarning: This program WILL reboot your system. Are you sure you want to continue?\033[0m")
-    choice = input("continue? [y/N] ").strip().lower()
-    if choice in ['n', 'no']:
-        print("exiting...")
-        sys.exit(1)
+from extra_functions import *
 
 def get_os_version():
     with open("/etc/os-release") as f:
