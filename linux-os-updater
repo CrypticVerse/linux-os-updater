@@ -12,7 +12,9 @@ check_special_names() {
     elif [[ "$distribution" == "ubuntucore" ]]; then
         distribution="ubuntu"
     elif [[ "$distribution" == "debiangnu/linux" ]]; then
-        distribution="debian"    
+        distribution="debian"
+    elif [[ "$distribution" == "fedoralinux" ]]; then
+        distribution="fedora"
     fi
 }
 
